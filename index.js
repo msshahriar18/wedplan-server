@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { connectDB } from "./db.js";
 import { errorHandler, notFound } from "./middlewares/error.js";
+import servicesRouter from "./routes/services.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +29,8 @@ app.use(express.json({ limit: "1mb" }));
 app.get("/", (req, res) => {
   res.send("WedPlan server is running");
 });
+
+app.use(servicesRouter);
 
 app.use(notFound);
 app.use(errorHandler);
