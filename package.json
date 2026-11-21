@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "make-admin": "node scripts/make-admin.js",
+    "seed": "node scripts/seed-services.js"
   },
   "author": "Shahriar",
   "license": "ISC",
@@ -20,5 +22,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

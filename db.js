@@ -5,7 +5,7 @@ if (!process.env.MONGODB_URI) {
   throw new Error("MONGODB_URI is missing in environment variables");
 }
 
-const client = new MongoClient(process.env.MONGODB_URI);
+export const client = new MongoClient(process.env.MONGODB_URI);
 
 // reuse the same connection between serverless invocations
 let connectPromise;
