@@ -40,6 +40,13 @@ const createIndexes = async () => {
     bookings.createIndex({ serviceId: 1, eventDate: 1, status: 1 }),
     bookings.createIndex({ customerId: 1 }),
     bookings.createIndex({ vendorId: 1 }),
-    transactions.createIndex({ stripeSessionId: 1 }, { unique: true }),
+    transactions.createIndex(
+      { stripeSessionId: 1 },
+      { unique: true, partialFilterExpression: { stripeSessionId: { $type: "string" } } }
+    ),
+    transactions.createIndex(
+      { stripeInvoiceId: 1 },
+      { unique: true, partialFilterExpression: { stripeInvoiceId: { $type: "string" } } }
+    ),
   ]);
 };

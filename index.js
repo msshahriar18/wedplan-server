@@ -9,6 +9,7 @@ import usersRouter from "./routes/users.js";
 import adminRouter from "./routes/admin.js";
 import statsRouter from "./routes/stats.js";
 import paymentsRouter from "./routes/payments.js";
+import webhookRouter from "./routes/webhook.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +29,9 @@ app.use(async (req, res, next) => {
     next(err);
   }
 });
+
+// webhook must be registered before express.json()
+app.use(webhookRouter);
 
 app.use(express.json({ limit: "1mb" }));
 
