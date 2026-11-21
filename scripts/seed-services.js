@@ -1,8 +1,10 @@
-// Adds some demo services for an existing vendor account (already approved).
-//   npm run seed -- vendor@example.com
+// Adds demo services (already approved) for existing vendor accounts.
+// Services are shared between the given vendors, and a free vendor
+// only gets 3 of them active, same as the real rule.
+//   npm run seed -- vendor1@example.com vendor2@example.com
 import { client, services, users } from "../db.js";
 
-const email = process.argv[2]?.toLowerCase().trim();
+const emails = process.argv.slice(2).map((e) => e.toLowerCase().trim());
 const img = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1200&q=80`;
 
 const demoServices = [
@@ -62,28 +64,35 @@ const demoServices = [
   },
 ];
 
-if (!email) {
-  console.log("Usage: npm run seed -- <vendor email>");
+if (emails.length === 0) {
+  console.log("Usage: npm run seed -- <vendor email> [more vendor emails]");
   process.exit(1);
 }
 
 try {
   await client.connect();
-  const vendor = await users.findOne({ email, role: "vendor" });
-  if (!vendor) {
-    console.log(`No vendor account found for ${email}`);
+  const vendors = await users.find({ email: { $in: emails }, role: "vendor" }).toArray();
+  if (vendors.length === 0) {
+    console.log("No vendor accounts found for the given emails");
   } else {
     const now = Date.now();
-    const docs = demoServices.map((service, i) => ({
-      ...service,
-      vendorId: vendor._id,
-      status: "approved",
-      isAvailable: true,
-      createdAt: new Date(now - i * 60_000),
-      updatedAt: new Date(now - i * 60_000),
-    }));
+    const activeCount = {};
+    const docs = demoServices.map((service, i) => {
+      const vendor = vendors[i % vendors.length];
+      const key = vendor._id.toString();
+      activeCount[key] = (activeCount[key] || 0) + 1;
+      const canBeActive = vendor.subscriptionPlan === "premium" || activeCount[key] <= 3;
+      return {
+        ...service,
+        vendorId: vendor._id,
+        status: "approved",
+        isAvailable: canBeActive,
+        createdAt: new Date(now - i * 60_000),
+        updatedAt: new Date(now - i * 60_000),
+      };
+    });
     await services.insertMany(docs);
-    console.log(`Added ${docs.length} services for ${email}`);
+    console.log(`Added ${docs.length} services for ${vendors.map((v) => v.email).join(", ")}`);
   }
 } finally {
   await client.close();
