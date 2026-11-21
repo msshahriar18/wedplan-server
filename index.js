@@ -8,6 +8,7 @@ import bookingsRouter from "./routes/bookings.js";
 import usersRouter from "./routes/users.js";
 import adminRouter from "./routes/admin.js";
 import statsRouter from "./routes/stats.js";
+import paymentsRouter from "./routes/payments.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -39,6 +40,7 @@ app.use(bookingsRouter);
 app.use(usersRouter);
 app.use(adminRouter);
 app.use(statsRouter);
+app.use(paymentsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
