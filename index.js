@@ -6,6 +6,8 @@ import { errorHandler, notFound } from "./middlewares/error.js";
 import servicesRouter from "./routes/services.js";
 import bookingsRouter from "./routes/bookings.js";
 import usersRouter from "./routes/users.js";
+import adminRouter from "./routes/admin.js";
+import statsRouter from "./routes/stats.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -35,6 +37,8 @@ app.get("/", (req, res) => {
 app.use(servicesRouter);
 app.use(bookingsRouter);
 app.use(usersRouter);
+app.use(adminRouter);
+app.use(statsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
