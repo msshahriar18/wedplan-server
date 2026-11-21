@@ -4,6 +4,7 @@ import "dotenv/config";
 import { connectDB } from "./db.js";
 import { errorHandler, notFound } from "./middlewares/error.js";
 import servicesRouter from "./routes/services.js";
+import bookingsRouter from "./routes/bookings.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.use(servicesRouter);
+app.use(bookingsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
