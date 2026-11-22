@@ -2,9 +2,10 @@
 
 REST API for WedPlan, a wedding marketplace for couples, vendors and admins. Built with Express 5 and the native MongoDB driver. Authentication is handled by Better Auth on the client app; this server verifies JWTs and enforces every role and ownership rule on its own.
 
-- **Live site:** https://your-live-site-link.vercel.app
-- **Client repo:** https://github.com/your-username/wedplan-client
-- **Server repo:** https://github.com/your-username/wedplan-server
+- **Live site:** https://wedplan-client-theta.vercel.app
+- **Live API:** https://wedplan-server-chi-nine.vercel.app
+- **Client repo:** https://github.com/msshahriar18/wedplan-client
+- **Server repo:** https://github.com/msshahriar18/wedplan-server
 
 ## Features
 
@@ -67,7 +68,7 @@ Node.js · Express 5 · MongoDB · Stripe · jose · dotenv · cors
 1. Install
 
    ```bash
-   git clone https://github.com/your-username/wedplan-server.git
+   git clone https://github.com/msshahriar18/wedplan-server.git
    cd wedplan-server
    npm install
    ```
