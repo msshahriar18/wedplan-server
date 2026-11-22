@@ -140,7 +140,9 @@ if (emails.length === 0) {
 
 try {
   await client.connect();
-  const vendors = await users.find({ email: { $in: emails }, role: "vendor" }).toArray();
+  const found = await users.find({ email: { $in: emails }, role: "vendor" }).toArray();
+  // keep the order the emails were given in, mongo doesn't guarantee it
+  const vendors = emails.map((email) => found.find((v) => v.email === email)).filter(Boolean);
   if (vendors.length === 0) {
     console.log("No vendor accounts found for the given emails");
   } else {
